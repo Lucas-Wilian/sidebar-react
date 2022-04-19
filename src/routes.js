@@ -8,6 +8,18 @@ export const Routes = () => {
       <Route exact path='/'>
         <HomePage />
       </Route>
+
+      <Route exact path='/statistics'>
+        <h1>Statistics</h1>
+      </Route>
+
+      <Route exact path='/customers'>
+        <h1>Customers</h1>
+      </Route>
+
+      <Route exact path='/diagrams'>
+        <h1>Diagrams</h1>
+      </Route>
     </Switch>
   );
 };

@@ -7,4 +7,7 @@ export const Container = styled.div`
 
 export const Main = styled.div`
   padding: calc(${V.xxlSpacing} * 2);
+  h1 {
+    font-size: 14px;
+  }
 `;
