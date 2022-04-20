@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import * as C from './styles';
 
 import { logoSVG } from '../../assets';
@@ -7,11 +7,26 @@ import {
   AiOutlineHome,
   AiOutlineApartment,
   AiOutlineSetting,
+  AiOutlineLeft,
 } from 'react-icons/ai';
 import { BsPeople } from 'react-icons/bs';
 import { MdOutlineAnalytics, MdLogout } from 'react-icons/md';
+import { ThemeContext } from '../../App';
+import { useLocation } from 'react-router-dom';
 
 export const SideBar = () => {
+  const searchRef = useRef(null);
+  const { theme, setTheme } = useContext(ThemeContext);
+  const [sidebarOpen, setSideBarOpen] = useState(false);
+  const { pathname } = useLocation();
+  const searchClickHandle = () => {
+    if (!sidebarOpen) {
+      setSideBarOpen(true);
+      searchRef.current.focus();
+    } else {
+    }
+  };
+
   const linksAray = [
     {
       label: 'Home',
@@ -52,25 +67,46 @@ export const SideBar = () => {
     },
   ];
   return (
-    <C.Container>
+    <C.Container isOpen={sidebarOpen}>
+      <>
+        <C.SideBarButton
+          isOpen={sidebarOpen}
+          onClick={() => setSideBarOpen((p) => !p)}
+        >
+          <AiOutlineLeft />
+        </C.SideBarButton>
+      </>
       <C.Logo>
         <img alt='img_log' src={logoSVG} />
       </C.Logo>
-      <C.Search>
+      <C.Search
+        onClick={searchClickHandle}
+        style={!sidebarOpen ? { width: 'fit-content' } : {}}
+      >
         <C.SearchIcon>
           <AiOutlineSearch />
         </C.SearchIcon>
-        <input />
+        <input
+          ref={searchRef}
+          style={!sidebarOpen ? { width: 0, padding: 0 } : {}}
+        />
       </C.Search>
       <C.Divider />
-      {linksAray.map(({ icon, link, label, notification }) => (
-        <C.LinkContainer key={label}>
-          <C.LinkSidebar to={link}>
+      {linksAray.map(({ icon, to, label, notification }) => (
+        <C.LinkContainer key={label} isActive={pathname === to}>
+          <C.LinkSidebar
+            to={to}
+            style={!sidebarOpen ? { width: 'fit-content' } : {}}
+          >
             <C.LinkIcon>{icon}</C.LinkIcon>
-            <C.LinkLabel>{label}</C.LinkLabel>
-            {/*Se a variavel notificação for 0 ou Null, não ira aparecer nada para o usuario*/}
-            {!!notification && (
-              <C.LinkNotification>{notification}</C.LinkNotification>
+            {sidebarOpen && (
+              <>
+                <C.LinkLabel>{label}</C.LinkLabel>
+                {/*Se a variavel notificação for 0 ou Null, não ira aparecer nada para o usuario*/}
+                {!!notification && (
+                  <C.LinkNotification>{notification}</C.LinkNotification>
+                )}
+              </>
             )}
           </C.LinkSidebar>
         </C.LinkContainer>
@@ -78,17 +114,23 @@ export const SideBar = () => {
       <C.Divider />
       {secondaryLinksAray.map(({ icon, label }) => (
         <C.LinkContainer key={label}>
-          <C.LinkSidebar to='/'>
+          <C.LinkSidebar
+            to='/'
+            style={!sidebarOpen ? { width: 'fit-content' } : {}}
+          >
             <C.LinkIcon>{icon}</C.LinkIcon>
-            <C.LinkLabel>{label}</C.LinkLabel>
+            {sidebarOpen && <C.LinkLabel>{label}</C.LinkLabel>}
           </C.LinkSidebar>
         </C.LinkContainer>
       ))}
       <C.Divider />
       <C.Theme>
-        <C.ThemeLabel>Dark Mode</C.ThemeLabel>
-        <C.ThemeToggler>
-          <C.ToggleThumb />
+        {sidebarOpen && <C.ThemeLabel>Dark Mode</C.ThemeLabel>}
+        <C.ThemeToggler
+          isActive={theme === 'dark'}
+          onClick={() => setTheme((p) => (p === 'light' ? 'dark' : 'light'))}
+        >
+          <C.ToggleThumb style={theme === 'dark' ? { right: '1px' } : {}} />
         </C.ThemeToggler>
       </C.Theme>
     </C.Container>

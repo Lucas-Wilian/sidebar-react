@@ -13,6 +13,6 @@ export const darkTheme = {
   bg3: 'rgb(50, 50, 50)',
   bgAlpha: 'rgba(0, 0, 0,.3)',
 
-  text: 'rgb(45, 45, 45)',
+  text: 'rgb(230, 230, 230)',
   primary: 'rgb(52, 131, 235)',
 };

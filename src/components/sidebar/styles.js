@@ -3,11 +3,10 @@ import { Link } from 'react-router-dom';
 import { btnReset, V } from '../../styles/variable';
 
 export const Container = styled.div`
-  width: ${V.sidebarWidth};
+  width: ${({ isOpen }) => (!isOpen ? 'auto' : V.sidebarWidth)};
   background: ${({ theme }) => theme.bg};
   height: 100vh;
   padding: ${V.lgSpacing};
-
   position: relative;
 `;
 
@@ -57,7 +56,8 @@ export const Divider = styled.div`
 `;
 
 export const LinkContainer = styled.div`
-  background: transparent;
+  background: ${({ theme, isActive }) =>
+    !isActive ? 'trasparent' : theme.bg3};
   border-radius: ${V.borderRadius};
   margin: 8px 0;
   :hover {
@@ -115,7 +115,8 @@ export const ThemeToggler = styled.button`
   width: 36px;
   height: 20px;
   border-radius: 10px;
-  background: ${({ theme }) => theme.bg3};
+  background: ${({ theme, isActive }) =>
+    !isActive ? theme.bg3 : theme.primary};
   position: relative;
 `;
 
@@ -129,4 +130,23 @@ export const ToggleThumb = styled.div`
   right: calc(100% - 18px - 1px);
   border-radius: 50%;
   background: ${({ theme }) => theme.bg};
+`;
+
+export const SideBarButton = styled.div`
+  ${btnReset}
+  position: absolute;
+  top: ${V.xxlSpacing};
+  right: ${({ isOpen }) => (isOpen ? '-16px' : '-48px')};
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: ${({ theme }) => theme.bg};
+  box-shadow: 0 0 4px ${({ theme }) => theme.bg3},
+    0 0 7px ${({ theme }) => theme.bg};
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transform: ${({ isOpen }) => (!isOpen ? 'rotate(180deg)' : 'initial')};
 `;

@@ -9,7 +9,7 @@ import { darkTheme, lightTheme } from './styles/theme';
 export const ThemeContext = React.createContext(null);
 
 function App() {
-  const [theme, setTheme] = useState('light');
+  const [theme, setTheme] = useState('dark');
   const themeStyle = theme === 'light' ? lightTheme : darkTheme;
   return (
     <ThemeContext.Provider value={{ setTheme, theme }}>
